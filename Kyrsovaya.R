@@ -5,7 +5,7 @@ library("stringr")
 library("dplyr")
 library("tibble")
 library("readr")
-tb1= read_csv("C:/MathMod/eddypro.csv",skip = 1,na =c("","NA","-9999","-9999.0"), comment=c("["))
+tb1= read_csv("C:/MathMod/MathMod/eddypro.csv",skip = 1,na =c("","NA","-9999","-9999.0"), comment=c("["))
 tb1=tb1[-1,] 
 tb1  
 tb1=tb1[tb1$DOY > 132 & tb1$DOY < 152,] 
@@ -60,18 +60,21 @@ mod4 = lm(co2_flux ~ (co2_flux + co2_molar_density +
 mod4
 anova(mod4)
 summary(mod4)
-mod5 = lm(co2_flux ~ co2_molar_density + T_star_ + un_co2_flux + co2_flux:co2_molar_density + co2_flux:T_star_ +               
-  co2_flux:un_co2_flux + co2_molar_density:T_star_ + co2_molar_density:un_co2_flux, data=tb1)   
+mod5 = lm(co2_flux ~ (co2_flux + co2_molar_density + 
+                        T_star_ + un_co2_flux)^2 - T_star_:un_co2_flux, data = tb1)  
 mod5
 anova(mod5)
 summary(mod5)
-mod6 = lm(co2_flux ~ un_co2_flux + co2_flux:co2_molar_density + co2_flux:T_star_ +               
-          co2_molar_density:T_star_ + co2_molar_density:un_co2_flux, data=tb1)
+mod6 = lm(co2_flux ~ (co2_flux + co2_molar_density + 
+                     T_star_ + un_co2_flux)^2 - T_star_:un_co2_flux -
+                     co2_molar_density - T_star_ - co2_flux:un_co2_flux , data = tb1)
 mod6
 anova(mod6)
 summary(mod6)
-mod7 = lm(co2_flux ~ un_co2_flux + co2_flux:co2_molar_density + co2_flux:T_star_               
-            , data=tb1)
+mod7 = lm(co2_flux ~ (co2_flux + co2_molar_density + 
+                      T_star_ + un_co2_flux)^2 - T_star_:un_co2_flux -
+                      co2_molar_density - T_star_ - 
+                      co2_flux:un_co2_flux - co2_molar_density:T_star_ , data = tb1)
 mod7
 anova(mod7)
 summary(mod7)
